@@ -1,4 +1,4 @@
-package io.lolyay.musicPlayerMeow.music;
+package io.lolyay.musicPlayer.music;
 
 public class GlobalMusicSender extends AbstractMusicSender {
 

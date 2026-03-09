@@ -1,4 +1,4 @@
-package io.lolyay.musicPlayerMeow;
+package io.lolyay.musicPlayer;
 
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;

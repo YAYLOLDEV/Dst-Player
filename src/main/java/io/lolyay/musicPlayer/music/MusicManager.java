@@ -1,24 +1,24 @@
-package io.lolyay.musicPlayerMeow.music;
+package io.lolyay.musicPlayer.music;
 
 import io.lolyay.discordmsend.client.ClientTrackInfo;
 import io.lolyay.discordmsend.client.DstClient;
 import io.lolyay.discordmsend.network.types.ClientFeatures;
 import io.lolyay.discordmsend.obj.CUserData;
-import io.lolyay.musicPlayerMeow.MusicPlayerMeow;
-import io.lolyay.musicPlayerMeow.PlayerID;
-import lombok.SneakyThrows;
+import io.lolyay.musicPlayer.MusicPlayerMeow;
+import io.lolyay.musicPlayer.PlayerID;
 
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
-import static io.lolyay.musicPlayerMeow.music.MusicEventHandler.getPersonalPlayer;
+import static io.lolyay.musicPlayer.music.MusicEventHandler.getPersonalPlayer;
 
 
 public class MusicManager {
-    private final int serverId;
-    private final int globalGuildId;
+    private final long serverId;
+    private final long globalGuildId;
     private final DstClient client;
+    private final int volume;
     private final CUserData cUserData = new CUserData(
             "DstMusicPlayer - Paper",
             "0.1-BETA",
@@ -37,15 +37,16 @@ public class MusicManager {
         return client;
     }
 
-    public int getServerId() {
+    public long getServerId() {
         return serverId;
     }
     
-    public int getGlobalGuildId() {
+    public long getGlobalGuildId() {
         return globalGuildId;
     }
 
-    public MusicManager(int serverId) {
+    public MusicManager(long serverId, int volume) {
+        this.volume = volume;
         this.serverId = serverId;
         this.globalGuildId = serverId; // Use a high offset for global channel
         String token = MusicPlayerMeow.getInstance().getConfig().getString("music-token");
@@ -68,7 +69,7 @@ public class MusicManager {
                     System.out.println("[RADIO] Track found, playing on guild: " + globalGuildId);
                     MusicEventHandler.cleanGlobalAudioPlayer();
                     client.playTrack(tracks.getFirst(), globalGuildId);
-                    client.setVolume(globalGuildId, 40);
+                    client.setVolume(globalGuildId, volume);
                     return client.getTrackInfo(tracks.getFirst());
                 })
                 .exceptionally(ex -> {
@@ -78,10 +79,10 @@ public class MusicManager {
                 });
     }
     
-    private final java.util.Set<Integer> createdPlayers = java.util.concurrent.ConcurrentHashMap.newKeySet();
+    private final java.util.Set<Long> createdPlayers = java.util.concurrent.ConcurrentHashMap.newKeySet();
     
     public CompletableFuture<ClientTrackInfo> playPersonalSong(UUID playerUUID, String query, String playerName){
-        int guildId = serverId + PlayerID.toInt(playerUUID);
+        long guildId = serverId + PlayerID.toInt(playerUUID);
         
         System.out.println("[MUSIC] Starting personal music search for " + playerName + " (guild: " + guildId + ") - Query: " + query);
 
@@ -101,7 +102,7 @@ public class MusicManager {
                 .thenCompose(tracks -> {
                     System.out.println("[MUSIC] Track found, playing for " + playerName + " on guild: " + guildId);
                     client.playTrack(tracks.getFirst(), guildId);
-                    client.setVolume(guildId, 100);
+                    client.setVolume(guildId, volume);
                     return client.getTrackInfo(tracks.getFirst());
                 })
                 .thenApply(trackInfo -> {
@@ -127,7 +128,7 @@ public class MusicManager {
     
     // Stop PERSONAL player music
     public void stopPersonalMusic(UUID playerName) {
-        int guildId = serverId + PlayerID.toInt(playerName);
+        long guildId = serverId + PlayerID.toInt(playerName);
         System.out.println("[MUSIC] Stopping personal music for " + playerName + " (guild: " + guildId + ")");
         client.stop(guildId);
     }
@@ -138,7 +139,7 @@ public class MusicManager {
         try {
             client.connect(host, port);
             Thread.sleep(500); // server has race condition here, better wait
-            client.setDefaultVolume(40);
+            client.setDefaultVolume(volume);
             MusicPlayerMeow.getInstance().getLogger().info("Successfully connected to music server!");
         } catch (Exception e) {
             MusicPlayerMeow.getInstance().getLogger().severe("Failed to connect to music server: " + e.getMessage());

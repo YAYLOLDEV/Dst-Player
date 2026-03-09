@@ -1,10 +1,14 @@
 name: MusicPlayerMeow
 version: '1.0.1-BETA'
-main: io.lolyay.musicPlayerMeow.MusicPlayerMeow
+main: io.lolyay.musicPlayer.MusicPlayerMeow
 api-version: '1.21'
 authors: [ LOLYAY ]
 description: Hai
-depend:
-  - voicechat
+dependencies:
+  server:
+    voicechat:
+      join-classpath: true
+      load: BEFORE
+      required: true
 
-
+loader: "io.lolyay.musicPlayer.PLoader"

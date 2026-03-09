@@ -1,8 +1,8 @@
-package io.lolyay.musicPlayerMeow.music;
+package io.lolyay.musicPlayer.music;
 
 import de.maxhenkel.voicechat.api.VoicechatConnection;
 import io.lolyay.discordmsend.client.ClientTrackInfo;
-import io.lolyay.musicPlayerMeow.MusicPlayerMeow;
+import io.lolyay.musicPlayer.MusicPlayerMeow;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -48,8 +48,6 @@ public class PersonalMusicSender extends AbstractMusicSender {
     @Override
     protected void onStop() {
         System.out.println("Player Stopped/Cleaned for " + playerName);
-        // Notify MusicManager to stop the source (Discord bot)
-        // We use a new thread or check if this is safe to call here
         try {
             MusicPlayerMeow.getInstance().musicManager.stopPersonalMusic(playerName);
         } catch (Exception e) {
@@ -57,7 +55,6 @@ public class PersonalMusicSender extends AbstractMusicSender {
         }
     }
 
-    // Compatibility method for MusicEventHandler
     public void offer(short[] data, int seq) {
         super.offer(data);
     }

@@ -1,4 +1,4 @@
-package io.lolyay.musicPlayerMeow.utils;
+package io.lolyay.musicPlayer.utils;
 
 import de.maxhenkel.voicechat.api.opus.OpusEncoder;
 import de.maxhenkel.voicechat.concentus.OpusApplication;

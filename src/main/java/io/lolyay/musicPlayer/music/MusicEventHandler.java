@@ -1,4 +1,4 @@
-package io.lolyay.musicPlayerMeow.music;
+package io.lolyay.musicPlayer.music;
 
 import io.github.jaredmdobson.concentus.OpusDecoder;
 import io.github.jaredmdobson.concentus.OpusException;
@@ -7,8 +7,8 @@ import io.lolyay.discordmsend.network.protocol.packet.packets.S2C.postenc.AudioS
 import io.lolyay.discordmsend.network.protocol.packet.packets.S2C.postenc.TrackTimingUpdateS2CPacket;
 import io.lolyay.discordmsend.network.protocol.packet.packets.S2C.postenc.events.*;
 import io.lolyay.discordmsend.obj.Severity;
-import io.lolyay.musicPlayerMeow.MusicPlayerMeow;
-import io.lolyay.musicPlayerMeow.PlayerID;
+import io.lolyay.musicPlayer.MusicPlayerMeow;
+import io.lolyay.musicPlayer.PlayerID;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -176,7 +176,7 @@ public class MusicEventHandler implements ClientEventHandler {
     public void onAudio(AudioS2CPacket packet) {
         try {
             byte[] opusData = packet.opusBytes();
-
+            //WHY DO WE HAVE TO DECODE OPUS DATA JUST TO RE-ENCODE IT AGAIN ?????
             int samples = decoder.decode(
                     opusData,
                     0,

@@ -1,8 +1,8 @@
-package io.lolyay.musicPlayerMeow.music;
+package io.lolyay.musicPlayer.music;
 
 import de.maxhenkel.voicechat.api.audiochannel.AudioPlayer;
 import de.maxhenkel.voicechat.api.audiochannel.StaticAudioChannel;
-import io.lolyay.musicPlayerMeow.utils.OpusEncoderFactory;
+import io.lolyay.musicPlayer.utils.OpusEncoderFactory;
 
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -48,13 +48,10 @@ public abstract class AbstractMusicSender implements Supplier<short[]> {
             return;
         }
 
-        // Reset pause state on new start
         isPaused.set(false);
         
         if (startRequested.compareAndSet(false, true)) {
             if (!isPlaying.get()) {
-                // Always recreate the player to ensure a fresh state
-                // This fixes the issue where a stopped player (due to track end) cannot be restarted
                 if (audioPlayer != null) {
                     try {
                         audioPlayer.stopPlaying();
@@ -121,7 +118,6 @@ public abstract class AbstractMusicSender implements Supplier<short[]> {
         audioPlayer = null;
     }
     
-    // Hook for subclasses
     protected void onStop() {}
 
     @Override

@@ -1,4 +1,4 @@
-package io.lolyay.musicPlayerMeow.music;
+package io.lolyay.musicPlayer.music;
 
 import de.maxhenkel.voicechat.api.*;
 import de.maxhenkel.voicechat.api.audiochannel.StaticAudioChannel;
@@ -6,7 +6,7 @@ import de.maxhenkel.voicechat.api.events.EventRegistration;
 import de.maxhenkel.voicechat.api.events.PlayerConnectedEvent;
 import de.maxhenkel.voicechat.api.events.PlayerDisconnectedEvent;
 import de.maxhenkel.voicechat.api.events.VoicechatServerStartedEvent;
-import io.lolyay.musicPlayerMeow.PlayerID;
+import io.lolyay.musicPlayer.PlayerID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import static io.lolyay.musicPlayerMeow.music.MusicEventHandler.getPersonalPlayer;
+import static io.lolyay.musicPlayer.music.MusicEventHandler.getPersonalPlayer;
 
 
 public class VoiceChatPlugin implements VoicechatPlugin {
@@ -23,7 +23,6 @@ public class VoiceChatPlugin implements VoicechatPlugin {
     public static VoicechatServerApi voicechatServerApi;
     private static StaticAudioChannel globalChannel;
     public static final Map<UUID,StaticAudioChannel> channelMap = new HashMap<>();
-    // Map player UUID to their personal channel UUID
     private static final Map<UUID, UUID> playerChannels = new HashMap<>();
 
     @Override
@@ -45,8 +44,6 @@ public class VoiceChatPlugin implements VoicechatPlugin {
     private void onPlayerConnected(PlayerConnectedEvent playerConnectedEvent) {
         UUID playerUUID = playerConnectedEvent.getConnection().getPlayer().getUuid();
         
-        // Don't add to global - only add when radio starts playing
-        // Create and add player to their personal channel
         createChannelForPlayer(playerUUID);
     }
 
@@ -103,7 +100,6 @@ public class VoiceChatPlugin implements VoicechatPlugin {
             return getChannel(channelID);
         }
         
-        // Create new channel for this player and add them to it
         channelID = UUID.randomUUID();
         StaticAudioChannel channel = voicechatServerApi.createStaticAudioChannel(channelID);
         channel.setCategory(CATEGORY_ID);
@@ -118,7 +114,6 @@ public class VoiceChatPlugin implements VoicechatPlugin {
         StaticAudioChannel channel = voicechatServerApi.createStaticAudioChannel(channelID);
         channel.setCategory(CATEGORY_ID);
         
-        // Add the player to their own channel
         if (voicechatServerApi.getConnectionOf(playerUUID) != null) {
              channel.addTarget(voicechatServerApi.getConnectionOf(playerUUID));
         }

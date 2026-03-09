@@ -1,4 +1,4 @@
-package io.lolyay.musicPlayerMeow;
+package io.lolyay.musicPlayer;
 
 import io.papermc.paper.plugin.loader.PluginClasspathBuilder;
 import io.papermc.paper.plugin.loader.PluginLoader;

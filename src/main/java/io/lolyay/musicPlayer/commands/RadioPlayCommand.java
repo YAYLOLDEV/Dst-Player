@@ -1,7 +1,7 @@
-package io.lolyay.musicPlayerMeow.commands;
+package io.lolyay.musicPlayer.commands;
 
-import io.lolyay.musicPlayerMeow.MusicPlayerMeow;
-import io.lolyay.musicPlayerMeow.music.VoiceChatPlugin;
+import io.lolyay.musicPlayer.MusicPlayerMeow;
+import io.lolyay.musicPlayer.music.VoiceChatPlugin;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
@@ -22,7 +22,6 @@ public class RadioPlayCommand implements BasicCommand {
         
         String query = String.join(" ", strings);
         
-        // Add all players to global channel when radio starts
         VoiceChatPlugin.addAllPlayersToGlobal();
 
         MusicPlayerMeow.getInstance().musicManager.playGlobalRadio(query).thenAccept(trackInfo -> {
