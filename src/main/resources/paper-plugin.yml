@@ -1,0 +1,10 @@
+name: MusicPlayerMeow
+version: '1.0.1-BETA'
+main: io.lolyay.musicPlayerMeow.MusicPlayerMeow
+api-version: '1.21'
+authors: [ LOLYAY ]
+description: Hai
+depend:
+  - voicechat
+
+

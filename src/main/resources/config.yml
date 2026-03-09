@@ -1,0 +1,7 @@
+server-id: 2
+server-id-name: "UNCHANGED"
+gma4j-api-key: "e7de4034ec88f1f4f0a4"
+gma4j-con-url: "wss://s.api.prod1.subvive.eu/api/v1/mcb/socket"
+music-token: "89ab3a8357ca5b16645b96c9064c0057fb427bda"
+music-host: "37.27.54.19"
+music-port: 2677
