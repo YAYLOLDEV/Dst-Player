@@ -22,15 +22,12 @@ public class PLoader implements PluginLoader {
                 "lolyay", "default", "https://maven.lolyay.dev/releases"
         ).build());
 
-        // Paper’s official Maven Central mirror → no ToS violation, no rate-limits
         resolver.addRepository(new RemoteRepository.Builder(
                 "central", "default", MavenLibraryResolver.MAVEN_CENTRAL_DEFAULT_MIRROR
         ).build());
 
         builder.addLibrary(resolver);
     }
-
-    // ─── ONE-LINE FIX FOR THE CONSTRUCTOR ERROR ───
     private static Dependency dep(String coords) {
         return new Dependency(new DefaultArtifact(coords), null);
     }
