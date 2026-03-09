@@ -12,10 +12,8 @@ public class PLoader implements PluginLoader {
     @Override
     public void classloader(@NotNull PluginClasspathBuilder builder) {
         MavenLibraryResolver resolver = new MavenLibraryResolver();
-
         resolver.addDependency(dep("io.github.jaredmdobson:concentus:1.0.2"));
-
-        resolver.addDependency(dep("io.lolyay.dct:client:8.0.6"));
+        resolver.addDependency(dep("io.lolyay.dct:client:8.0.6")); //TODO will change a lot
 
         // ─── REPOSITORIES ───
         resolver.addRepository(new RemoteRepository.Builder(

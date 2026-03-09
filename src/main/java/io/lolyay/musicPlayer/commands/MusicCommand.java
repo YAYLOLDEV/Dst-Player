@@ -72,6 +72,7 @@ public class MusicCommand implements BasicCommand {
         }
         String query = queryBuilder.toString().trim();
 
+        //Horrible check, youtube.be/videoid is supported by DAPI but can't pass this check
         if (!(PREFIX_PATTERN.matcher(query).matches() || query.startsWith("https://"))) {
             query = "ytm:" + query;
         }
