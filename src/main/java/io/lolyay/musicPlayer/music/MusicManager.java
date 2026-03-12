@@ -6,6 +6,7 @@ import io.lolyay.discordmsend.network.types.ClientFeatures;
 import io.lolyay.discordmsend.obj.CUserData;
 import io.lolyay.musicPlayer.MusicPlayerMeow;
 import io.lolyay.musicPlayer.PlayerID;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -14,6 +15,7 @@ import java.util.concurrent.TimeUnit;
 import static io.lolyay.musicPlayer.music.MusicEventHandler.getPersonalPlayer;
 
 
+@Slf4j
 public class MusicManager {
     private final long serverId;
     private final long globalGuildId;
@@ -25,7 +27,7 @@ public class MusicManager {
             "LOLYAY",
             new ClientFeatures(
                     ClientFeatures.Feature.ALLOW_LIST_IN_ACTIVE_CONNECTIONS,
-                    ClientFeatures.Feature.USES_OPUS,
+                    //if we do this we get opus! ClientFeatures.Feature.FORCE_OPUS,
                     ClientFeatures.Feature.UDP_ME_PLZ // well not techincally UDP, just lets say sends you audio REALLY QUICKLY (opposite of streaming)
             )
     );
@@ -50,6 +52,10 @@ public class MusicManager {
         this.serverId = serverId;
         this.globalGuildId = serverId; // Use a high offset for global channel
         String token = MusicPlayerMeow.getInstance().getConfig().getString("music-token");
+        if(MusicPlayerMeow.getInstance().getConfig().getBoolean("force-opus", false)) {
+            log.warn("Forcing OPUS mode!");
+            cUserData.features().enable(ClientFeatures.Feature.FORCE_OPUS);
+        }
         this.client = DstClient.createDirect(token, cUserData, new MusicEventHandler());
     }
 

@@ -3,3 +3,4 @@ music-token: "" # well api key
 music-host: "" # um server ip thingy
 music-port: 2677 # server port
 resample-default-volume: 40 #0-100 better leave this as 40
+force-opus: false # <- set this to true if you want to sacrifice quality for network ussage

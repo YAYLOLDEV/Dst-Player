@@ -3,6 +3,7 @@ package io.lolyay.musicPlayer.music;
 import io.github.jaredmdobson.concentus.OpusDecoder;
 import io.github.jaredmdobson.concentus.OpusException;
 import io.lolyay.discordmsend.client.ClientEventHandler;
+import io.lolyay.discordmsend.network.protocol.codec.AudioConverter;
 import io.lolyay.discordmsend.network.protocol.packet.packets.S2C.postenc.AudioS2CPacket;
 import io.lolyay.discordmsend.network.protocol.packet.packets.S2C.postenc.TrackTimingUpdateS2CPacket;
 import io.lolyay.discordmsend.network.protocol.packet.packets.S2C.postenc.events.*;
@@ -175,17 +176,34 @@ public class MusicEventHandler implements ClientEventHandler {
     @Override
     public void onAudio(AudioS2CPacket packet) {
         try {
-            byte[] opusData = packet.opusBytes();
             //WHY DO WE HAVE TO DECODE OPUS DATA JUST TO RE-ENCODE IT AGAIN ?????
-            int samples = decoder.decode(
-                    opusData,
-                    0,
-                    opusData.length,
-                    decodeBuffer,
-                    0,
-                    960, // frame size
-                    false
-            );
+            // meow fixed it hehe~
+            // P-V 107
+            int samples = (switch (packet.codec().getRaw()) {
+                case AAC, VORBIS ->
+                    throw new RuntimeException("Can't Parse codec " + packet.codec());
+
+                case OPUS -> {
+                    byte[] opusData = packet.audioBytes();
+                    yield decoder.decode(
+                            opusData,
+                            0,
+                            opusData.length,
+                            decodeBuffer,
+                            0,
+                            960, // frame size
+                            false
+                    );
+                }
+
+                case PCM -> { // I know sending RAW PCM over the interwebs is really inefficient, but if you consider the resource AND QUALITY usage of encoding it, then decoding it here again, this is better. Also sending raw data from the current service where playback is happening from isn't an option, due to this server then having to do all of the decding and resampling, wich is NOT GOOD for a mincraft server supporting lots of players...
+                    AudioConverter.convertToShortArray(packet.audioBytes(), decodeBuffer);
+                    yield decodeBuffer.length;
+                }
+
+            });
+
+
 
             if (samples > 0) {
                 short[] outFrame = new short[samples];
