@@ -196,22 +196,26 @@ public class MusicEventHandler implements ClientEventHandler {
                     );
                 }
 
-                case PCM -> { // I know sending RAW PCM over the interwebs is really inefficient, but if you consider the resource AND QUALITY usage of encoding it, then decoding it here again, this is better. Also sending raw data from the current service where playback is happening from isn't an option, due to this server then having to do all of the decding and resampling, wich is NOT GOOD for a mincraft server supporting lots of players...
+                case PCM -> {
+                    int shortsWritten = packet.audioBytes().length / 2;
                     AudioConverter.convertToShortArray(packet.audioBytes(), decodeBuffer);
-                    yield decodeBuffer.length;
+                     yield shortsWritten / 2;
                 }
 
             });
-
-
 
             if (samples > 0) {
                 short[] outFrame = new short[samples];
                 for (int i = 0; i < samples; i++) {
                     int left = decodeBuffer[i * 2];
                     int right = decodeBuffer[i * 2 + 1];
-                    outFrame[i] = (short) ((left + right) >> 1);
-                }
+                    float l = left / 32768.0f;
+                    float r = right / 32768.0f;
+                    float mixed = (l + r) * 0.6f;
+                    if (mixed > 1.0f) mixed = 1.0f;
+                    if (mixed < -1.0f) mixed = -1.0f;
+
+                    outFrame[i] = (short) (mixed * 32767.0f);                }
 
                 if (isGlobalGuildId(packet.guildId())) {
                     GlobalMusicSender player = getGlobalPlayer();

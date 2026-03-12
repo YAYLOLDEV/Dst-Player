@@ -3,8 +3,8 @@ package io.lolyay.musicPlayer.utils;
 import de.maxhenkel.voicechat.api.opus.OpusEncoder;
 import de.maxhenkel.voicechat.concentus.OpusApplication;
 import de.maxhenkel.voicechat.concentus.OpusBandwidth;
-import de.maxhenkel.voicechat.concentus.OpusConstants;
 import de.maxhenkel.voicechat.concentus.OpusSignal;
+import io.github.jaredmdobson.concentus.OpusConstants;
 
 public class OpusEncoderFactory implements OpusEncoder {
 
@@ -26,16 +26,19 @@ public class OpusEncoderFactory implements OpusEncoder {
         this.buffer = new byte[maxPayloadSize];
 
         try {
-            this.encoder = new de.maxhenkel.voicechat.concentus.OpusEncoder(sampleRate, channels, application);
-            this.encoder.setBitrate(OpusConstants.OPUS_BITRATE_MAX);
-            this.encoder.setComplexity(10);
-            this.encoder.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
-            this.encoder.setBandwidth(OpusBandwidth.OPUS_BANDWIDTH_FULLBAND);
-            this.encoder.setUseVBR(true);
-            this.encoder.setLSBDepth(24);
-            this.encoder.setUseDTX(false);
-            this.encoder.setPacketLossPercent(0);
-            this.encoder.setPredictionDisabled(false);
+            this.encoder = new de.maxhenkel.voicechat.concentus.OpusEncoder(sampleRate, channels, OpusApplication.OPUS_APPLICATION_AUDIO);
+            encoder.setBitrate(OpusConstants.OPUS_BITRATE_MAX);
+            encoder.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
+            encoder.setBandwidth(OpusBandwidth.OPUS_BANDWIDTH_FULLBAND);
+            encoder.setApplication(OpusApplication.OPUS_APPLICATION_AUDIO);
+            encoder.setMaxBandwidth(OpusBandwidth.OPUS_BANDWIDTH_FULLBAND);
+            encoder.setUseVBR(true);
+            encoder.setUseConstrainedVBR(false);
+            encoder.setUseDTX(false);
+            encoder.setPacketLossPercent(5);
+            encoder.setLSBDepth(24);
+            encoder.setPredictionDisabled(false);
+            encoder.setComplexity(10);
 
         } catch (Exception e) {
             throw new IllegalStateException("Opus initialization failed: " + e.getMessage(), e);
