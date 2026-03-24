@@ -1,5 +1,6 @@
 package io.lolyay.musicPlayer.music;
 
+import de.maxhenkel.voicechat.Voicechat;
 import de.maxhenkel.voicechat.api.audiochannel.AudioPlayer;
 import de.maxhenkel.voicechat.api.audiochannel.StaticAudioChannel;
 import io.lolyay.musicPlayer.utils.OpusEncoderFactory;
@@ -19,7 +20,7 @@ public abstract class AbstractMusicSender implements Supplier<short[]> {
     
     private static final int MAX_SILENCE_FRAMES = 50; // 1 second of silence before stopping
     private int silenceCounter = 0;
-    private static final short[] SILENCE_FRAME = new short[960]; // 20ms of silence
+    private static final short[] SILENCE_FRAME = new short[1920]; // 20ms of silence
     protected long totalFrames = 0;
 
     public AbstractMusicSender() {
@@ -33,11 +34,12 @@ public abstract class AbstractMusicSender implements Supplier<short[]> {
         if (this.audioPlayer != null) {
             destroy();
         }
-        this.audioPlayer = VoiceChatPlugin.voicechatServerApi.createAudioPlayer(
-                channel,
-                OpusEncoderFactory.create(),
-                this
-        );
+            System.out.println("ADDADAD");
+            this.audioPlayer = new PCMStereoSoundSender(
+                    channel,
+                    this
+            );
+
         queue.clear();
         silenceCounter = 0;
         totalFrames = 0;
@@ -58,9 +60,8 @@ public abstract class AbstractMusicSender implements Supplier<short[]> {
                     } catch (Exception ignored) {}
                 }
                 
-                this.audioPlayer = VoiceChatPlugin.voicechatServerApi.createAudioPlayer(
+                this.audioPlayer = new PCMStereoSoundSender(
                         channel,
-                        OpusEncoderFactory.create(),
                         this
                 );
                 

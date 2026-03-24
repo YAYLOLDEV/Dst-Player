@@ -1,7 +1,7 @@
 package io.lolyay.musicPlayer.music;
 
 import de.maxhenkel.voicechat.api.VoicechatConnection;
-import io.lolyay.discordmsend.client.ClientTrackInfo;
+import io.lolyay.discordmsend.network.types.TrackMetadata;
 import io.lolyay.musicPlayer.MusicPlayerMeow;
 import org.bukkit.entity.Player;
 
@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public class PersonalMusicSender extends AbstractMusicSender {
     private final UUID playerName;
-    private ClientTrackInfo currentTrack;
+    private TrackMetadata currentTrack;
 
     public PersonalMusicSender(UUID name) {
         super();
@@ -18,11 +18,11 @@ public class PersonalMusicSender extends AbstractMusicSender {
         System.out.println("Created Player for " + name);
     }
 
-    public void setCurrentTrack(ClientTrackInfo track) {
+    public void setCurrentTrack(TrackMetadata track) {
         this.currentTrack = track;
     }
 
-    public ClientTrackInfo getCurrentTrack() {
+    public TrackMetadata getCurrentTrack() {
         return currentTrack;
     }
 

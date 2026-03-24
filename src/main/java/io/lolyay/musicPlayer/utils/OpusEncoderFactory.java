@@ -6,12 +6,14 @@ import de.maxhenkel.voicechat.concentus.OpusBandwidth;
 import de.maxhenkel.voicechat.concentus.OpusSignal;
 import io.github.jaredmdobson.concentus.OpusConstants;
 
+import java.util.SimpleTimeZone;
+
 public class OpusEncoderFactory implements OpusEncoder {
 
     private static final int SAMPLE_RATE = 48000;
     private static final int FRAME_SIZE = 960;
-    private static final int CHANNELS = 1;        // Mono :sob:
-    private static final int MAX_PAYLOAD_SIZE = 4000;
+    private static final int CHANNELS = 2;        // Mono :sob:
+    private static final int MAX_PAYLOAD_SIZE = 32000;
 
     private de.maxhenkel.voicechat.concentus.OpusEncoder encoder;
     private final byte[] buffer;
@@ -26,8 +28,8 @@ public class OpusEncoderFactory implements OpusEncoder {
         this.buffer = new byte[maxPayloadSize];
 
         try {
-            this.encoder = new de.maxhenkel.voicechat.concentus.OpusEncoder(sampleRate, channels, OpusApplication.OPUS_APPLICATION_AUDIO);
-            encoder.setBitrate(OpusConstants.OPUS_BITRATE_MAX);
+            this.encoder = new de.maxhenkel.voicechat.concentus.OpusEncoder(sampleRate, CHANNELS, OpusApplication.OPUS_APPLICATION_AUDIO);
+            encoder.setBitrate(510000);
             encoder.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
             encoder.setBandwidth(OpusBandwidth.OPUS_BANDWIDTH_FULLBAND);
             encoder.setApplication(OpusApplication.OPUS_APPLICATION_AUDIO);

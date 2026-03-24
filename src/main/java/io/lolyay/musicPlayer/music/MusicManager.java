@@ -1,8 +1,8 @@
 package io.lolyay.musicPlayer.music;
 
-import io.lolyay.discordmsend.client.ClientTrackInfo;
 import io.lolyay.discordmsend.client.DstClient;
 import io.lolyay.discordmsend.network.types.ClientFeatures;
+import io.lolyay.discordmsend.network.types.TrackMetadata;
 import io.lolyay.discordmsend.obj.CUserData;
 import io.lolyay.musicPlayer.MusicPlayerMeow;
 import io.lolyay.musicPlayer.PlayerID;
@@ -59,7 +59,7 @@ public class MusicManager {
         this.client = DstClient.createDirect(token, cUserData, new MusicEventHandler());
     }
 
-    public CompletableFuture<ClientTrackInfo> playGlobalRadio(String query){
+    public CompletableFuture<TrackMetadata> playGlobalRadio(String query){
         System.out.println("[RADIO] Starting global radio search for: " + query);
         
         if (isGlobalPlaying) {
@@ -87,7 +87,7 @@ public class MusicManager {
     
     private final java.util.Set<Long> createdPlayers = java.util.concurrent.ConcurrentHashMap.newKeySet();
     
-    public CompletableFuture<ClientTrackInfo> playPersonalSong(UUID playerUUID, String query, String playerName){
+    public CompletableFuture<TrackMetadata> playPersonalSong(UUID playerUUID, String query, String playerName){
         long guildId = serverId + PlayerID.toInt(playerUUID);
         
         System.out.println("[MUSIC] Starting personal music search for " + playerName + " (guild: " + guildId + ") - Query: " + query);

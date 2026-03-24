@@ -29,7 +29,7 @@ public class RadioPlayCommand implements BasicCommand {
                 Component.text("🎵 Now playing on GLOBAL RADIO: ", NamedTextColor.GOLD)
                     .append(Component.text(trackInfo.trackName(), NamedTextColor.YELLOW))
                     .append(Component.text(" by ", NamedTextColor.GOLD))
-                    .append(Component.text(trackInfo.trackAuthor(), NamedTextColor.YELLOW))
+                    .append(Component.text(trackInfo.author(), NamedTextColor.YELLOW))
             );
         }).exceptionally(ex -> {
             commandSourceStack.getSender().sendMessage(

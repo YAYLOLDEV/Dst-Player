@@ -13,7 +13,7 @@ public class PLoader implements PluginLoader {
     public void classloader(@NotNull PluginClasspathBuilder builder) {
         MavenLibraryResolver resolver = new MavenLibraryResolver();
         resolver.addDependency(dep("io.github.jaredmdobson:concentus:1.0.2"));
-        resolver.addDependency(dep("io.lolyay.dct:client:8.0.7")); //TODO will change a lot
+        resolver.addDependency(dep("io.lolyay.dct:client:9.0.3")); //TODO will change a lot
 
         // ─── REPOSITORIES ───
         resolver.addRepository(new RemoteRepository.Builder(

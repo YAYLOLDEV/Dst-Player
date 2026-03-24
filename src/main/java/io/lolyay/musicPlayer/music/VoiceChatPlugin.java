@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import static io.lolyay.musicPlayer.CustomUUID.generateCustomV8;
+import static io.lolyay.musicPlayer.CustomUUID.generateCustomV9;
 import static io.lolyay.musicPlayer.music.MusicEventHandler.getPersonalPlayer;
 
 
@@ -100,7 +102,7 @@ public class VoiceChatPlugin implements VoicechatPlugin {
             return getChannel(channelID);
         }
         
-        channelID = UUID.randomUUID();
+        channelID = generateCustomV8();
         StaticAudioChannel channel = voicechatServerApi.createStaticAudioChannel(channelID);
         channel.setCategory(CATEGORY_ID);
         
@@ -110,7 +112,7 @@ public class VoiceChatPlugin implements VoicechatPlugin {
     }
     
     private static void createChannelForPlayer(UUID playerUUID) {
-        UUID channelID = UUID.randomUUID();
+        UUID channelID = generateCustomV8();
         StaticAudioChannel channel = voicechatServerApi.createStaticAudioChannel(channelID);
         channel.setCategory(CATEGORY_ID);
         
@@ -176,7 +178,7 @@ public class VoiceChatPlugin implements VoicechatPlugin {
     }
 
     public static void createGlobalChannel(){
-        UUID channelID = UUID.randomUUID();
+        UUID channelID = generateCustomV9();
         StaticAudioChannel channel = voicechatServerApi.createStaticAudioChannel(channelID);
         channel.setCategory(GLOBAL_CATEGORY_ID);
         channelMap.put(channelID, channel);

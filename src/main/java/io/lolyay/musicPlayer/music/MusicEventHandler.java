@@ -11,6 +11,7 @@ import io.lolyay.discordmsend.obj.Severity;
 import io.lolyay.musicPlayer.MusicPlayerMeow;
 import io.lolyay.musicPlayer.PlayerID;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -199,14 +200,16 @@ public class MusicEventHandler implements ClientEventHandler {
                 case PCM -> {
                     int shortsWritten = packet.audioBytes().length / 2;
                     AudioConverter.convertToShortArray(packet.audioBytes(), decodeBuffer);
-                     yield shortsWritten / 2;
+                    yield shortsWritten / 2;
                 }
 
             });
 
             if (samples > 0) {
-                short[] outFrame = new short[samples];
-                for (int i = 0; i < samples; i++) {
+                short[] outFrame = Arrays.copyOf(decodeBuffer, decodeBuffer.length); // new short[samples];
+                // playback works fine here with java sound thing
+
+              /*  for (int i = 0; i < samples; i++) {
                     int left = decodeBuffer[i * 2];
                     int right = decodeBuffer[i * 2 + 1];
                     float l = left / 32768.0f;
@@ -215,7 +218,8 @@ public class MusicEventHandler implements ClientEventHandler {
                     if (mixed > 1.0f) mixed = 1.0f;
                     if (mixed < -1.0f) mixed = -1.0f;
 
-                    outFrame[i] = (short) (mixed * 32767.0f);                }
+                    outFrame[i] = (short) (mixed * 32767.0f);
+                }*/
 
                 if (isGlobalGuildId(packet.guildId())) {
                     GlobalMusicSender player = getGlobalPlayer();

@@ -1,10 +1,10 @@
 package io.lolyay.musicPlayer.commands;
 
+import io.lolyay.discordmsend.network.types.TrackMetadata;
 import io.lolyay.musicPlayer.MusicPlayerMeow;
 import io.lolyay.musicPlayer.PlayerID;
 import io.lolyay.musicPlayer.music.MusicEventHandler;
 import io.lolyay.musicPlayer.music.PersonalMusicSender;
-import io.lolyay.discordmsend.client.ClientTrackInfo;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
@@ -91,7 +91,7 @@ public class MusicCommand implements BasicCommand {
                             Component.text("🎵 Now playing: ", NamedTextColor.GREEN)
                                     .append(Component.text(trackInfo.trackName(), NamedTextColor.AQUA))
                                     .append(Component.text(" by ", NamedTextColor.GREEN))
-                                    .append(Component.text(trackInfo.trackAuthor(), NamedTextColor.AQUA))
+                                    .append(Component.text(trackInfo.author(), NamedTextColor.AQUA))
                     );
                 }).exceptionally(ex -> {
                     player.sendMessage(
@@ -106,13 +106,13 @@ public class MusicCommand implements BasicCommand {
         PersonalMusicSender sender = MusicEventHandler.getPersonalPlayer(guildId);
         
         if (sender != null && sender.getCurrentTrack() != null) {
-            ClientTrackInfo info = sender.getCurrentTrack();
+            TrackMetadata info = sender.getCurrentTrack();
             player.sendMessage(Component.text("--------------------------------", NamedTextColor.DARK_PURPLE));
             player.sendMessage(Component.text("🎵 Current Track Info 🎵", NamedTextColor.LIGHT_PURPLE, TextDecoration.BOLD));
             player.sendMessage(Component.empty());
             player.sendMessage(Component.text("Title: ", NamedTextColor.GRAY).append(Component.text(info.trackName(), NamedTextColor.AQUA)));
-            player.sendMessage(Component.text("Author: ", NamedTextColor.GRAY).append(Component.text(info.trackAuthor(), NamedTextColor.AQUA)));
-            player.sendMessage(Component.text("Duration: ", NamedTextColor.GRAY).append(Component.text(formatDuration(info.duration()), NamedTextColor.GOLD)));
+            player.sendMessage(Component.text("Author: ", NamedTextColor.GRAY).append(Component.text(info.author(), NamedTextColor.AQUA)));
+            player.sendMessage(Component.text("Duration: ", NamedTextColor.GRAY).append(Component.text(formatDuration(info.durationMs()), NamedTextColor.GOLD)));
             player.sendMessage(Component.text("Id: ", NamedTextColor.GRAY).append(Component.text(info.id(), NamedTextColor.YELLOW)));
             player.sendMessage(Component.text("--------------------------------", NamedTextColor.DARK_PURPLE));
         } else {

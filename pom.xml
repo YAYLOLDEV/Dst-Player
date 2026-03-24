@@ -105,7 +105,7 @@
         <dependency>
             <groupId>io.lolyay.dct</groupId>
             <artifactId>client</artifactId>
-            <version>8.0.7</version>
+            <version>9.0.3</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
